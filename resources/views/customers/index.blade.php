@@ -18,10 +18,8 @@
                         <th>ID</th>
                         <th>Image</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Device ID</th>
                         <th>Contact</th>
-                        <th>Address</th>
-                        <th>Password</th>
                         <th>Created At</th>
                         <th>Actions</th>
                     </tr>
@@ -31,11 +29,9 @@
                     <tr>
                         <td>{{$customer->id}}</td>
                         <td><img class="customer-img img-thumbnail img-fluid" src="{{ asset('storage/app/public/customers/' . $customer->image) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>
-                        <td>{{$customer->first_name}} {{$customer->last_name}}</td>
-                        <td>{{$customer->email}}</td>
+                        <td>{{$customer->name}}</td>
+                        <td>{{$customer->device_id}}</td>
                         <td>{{$customer->phone}}</td>
-                        <td>{{$customer->address}}</td>
-                        <td>{{$customer->password}}</td>
                         <td>{{$customer->created_at}}</td>
                         <td>
                             <a href="{{ route('customers.edit', $customer) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>

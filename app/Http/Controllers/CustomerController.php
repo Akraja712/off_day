@@ -41,16 +41,14 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(CustomerStoreRequest $request)
     {
         $imagePath = $request->file('image')->store('customers', 'public');
 
         $customer = Customer::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'address' => $request->address,
+            'name' => $request->name,
+            'device_id' => $request->device_id,
             'phone' => $request->phone,
             'image' => basename($imagePath),
         ]);
@@ -91,12 +89,9 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        $customer->first_name = $request->first_name;
-        $customer->last_name = $request->last_name;
-        $customer->email = $request->email;
-        $customer->password = $request->password;
+        $customer->name = $request->name;
+        $customer->device_id = $request->device_id;
         $customer->phone = $request->phone;
-        $customer->address = $request->address;
 
         if ($request->hasFile('image')) {
             $newImagePath = $request->file('image')->store('customers', 'public');

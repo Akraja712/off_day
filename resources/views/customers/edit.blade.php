@@ -13,34 +13,11 @@
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="first_name">First Name</label>
-                    <input type="text" name="first_name" class="form-control @error('first_name') is-invalid @enderror"
-                           id="first_name"
-                           placeholder="First Name" value="{{ old('first_name', $customer->first_name) }}">
-                    @error('first_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror"
-                           id="last_name"
-                           placeholder="Last Name" value="{{ old('last_name', $customer->last_name) }}">
-                    @error('last_name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                           placeholder="Email" value="{{ old('email', $customer->email) }}">
-                    @error('email')
+                    <label for="first_name">Name</label>
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                           id="name"
+                           placeholder="Name" value="{{ old('name', $customer->name) }}">
+                    @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -57,22 +34,13 @@
                     </span>
                     @enderror
                 </div>
+        
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" name="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                           placeholder="password" value="{{ old('password', $customer->password) }}">
-                    @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
-                           id="address"
-                           placeholder="Address" value="{{ old('address', $customer->address) }}">
-                    @error('address')
+                    <label for="device_id">Device ID</label>
+                    <input type="text" name="device_id" class="form-control @error('device_id') is-invalid @enderror"
+                           id="device_id"
+                           placeholder="device_id" value="{{ old('device_id', $customer->device_id) }}">
+                    @error('device_id')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
