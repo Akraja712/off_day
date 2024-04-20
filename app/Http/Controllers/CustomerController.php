@@ -43,7 +43,8 @@ class CustomerController extends Controller
      */
     public function store(CustomerStoreRequest $request)
     {
-        $imagePath = $request->file('image')->store('app/customers', 'public');
+        $imagePath = $request->file('image')->store('customers', 'public');
+
         $customer = Customer::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -98,9 +99,9 @@ class CustomerController extends Controller
         $customer->address = $request->address;
 
         if ($request->hasFile('image')) {
-            $newImagePath = $request->file('image')->store('app/customers', 'public');
+            $newImagePath = $request->file('image')->store('customers', 'public');
             // Delete old image if it exists
-            Storage::disk('public')->delete('app/customers' . $customer->image);
+            Storage::disk('public')->delete('customers/' . $customer->image);
             $customer->image = basename($newImagePath);
         }
 
@@ -112,8 +113,8 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        if (storage::disk('public')->exists('app/customers' . $customer->image)) {
-            storage::disk('public')->delete('app/customers' . $customer->image);
+        if (Storage::disk('public')->exists('customers/' . $customer->image)) {
+            Storage::disk('public')->delete('customers/' . $customer->image);
         }
         $customer->delete();
 
