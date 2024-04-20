@@ -80,7 +80,7 @@
                 </div>
                 <div class="form-group">
             <span>Current Image:</span>
-            <img src="{{ Storage::url('customers/' . $customer->image) }}" alt="{{ $customer->first_name }}" style="max-width: 100px; max-height: 100px;">
+            <img src="{{ Storage::url('storage/app/public/customers/' . $customer->image) }}" alt="{{ $customer->first_name }}" style="max-width: 100px; max-height: 100px;">
             <br>
             <label for="image">New Image</label>
     <div class="custom-file">
