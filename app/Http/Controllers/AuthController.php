@@ -122,4 +122,43 @@ class AuthController extends Controller
             ],
         ], 201);
     }
+    public function customerdetails(Request $request)
+{
+    $customer_id = $request->input('customer_id');
+
+    if (empty($customer_id)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'customer_id is empty.',
+        ], 400);
+    }
+
+    // Fetch the customer details from the database based on the provided customer_id
+    $customer = Customer::find($customer_id);
+
+    if (!$customer) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Customer not found.',
+        ], 404);
+    }
+
+    // Image URL
+    $imageUrl = asset('storage/app/public/customers/' . $customer->image);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Customer details retrieved successfully.',
+        'data' => [
+            'id' => $customer->id,
+            'name' => $customer->name,
+            'phone' => $customer->phone,
+            'device_id' => $customer->device_id,
+            'updated_at' => $customer->updated_at,
+            'created_at' => $customer->created_at,
+            'image_url' => $imageUrl,
+        ],
+    ], 200);
+}
+
 }
