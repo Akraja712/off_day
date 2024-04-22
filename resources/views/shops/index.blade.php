@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{$shop->id}}</td>
                         <td>
-                       <img class="customer-img img-thumbnail img-fluid rounded-circle" src="{{ asset('public/storage/shops/' . $shop->logo) }}"   alt=""
+                       <img class="customer-img img-thumbnail img-fluid rounded-circle" src="{{ asset('storage/app/public/shops/' . $shop->logo) }}"   alt=""
                         style="max-width: 100px; max-height: 100px;">
                        </td>
                         <td>{{$shop->owner_name}}</td>
