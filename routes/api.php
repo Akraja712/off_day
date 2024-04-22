@@ -12,6 +12,7 @@ Route::post('shopregister', [AuthController::class, 'shopregister']);
 Route::post('/shop-details', [AuthController::class, 'shopdetails']);
 Route::post('/add-offer', [AuthController::class, 'addoffers']);
 Route::post('/edit-offer', [AuthController::class, 'editoffers']);
+Route::post('/delete-offer', [AuthController::class, 'deleteoffers']);
 Route::post('/offer-details', [AuthController::class, 'offerdetails']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

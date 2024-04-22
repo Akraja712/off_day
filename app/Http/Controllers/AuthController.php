@@ -515,6 +515,35 @@ public function editoffers(Request $request)
         ],
     ], 200);
 }
+public function deleteoffers(Request $request)
+{
+    $offer_id = $request->input('offer_id');
+
+    if (empty($offer_id)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'offer_id is empty.',
+        ], 400);
+    }
+
+    // Fetch the offer from the database based on the provided offer_id
+    $offer = Offers::find($offer_id);
+
+    if (!$offer) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Offer not found.',
+        ], 404);
+    }
+
+    // Delete the offer
+    $offer->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Offer deleted successfully.',
+    ], 200);
+}
 public function offerdetails(Request $request)
 {
 $offer_id = $request->input('offer_id');
