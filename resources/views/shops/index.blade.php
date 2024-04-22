@@ -17,7 +17,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Logo</th>
-                        <th>Name</th>
+                        <th>Owner Name</th>
+                        <th>Shop Name</th>
                         <th>Email</th>
                         <th>Contact</th>
                         <th>Address</th>
@@ -33,9 +34,10 @@
                        <img class="customer-img img-thumbnail img-fluid rounded-circle" src="{{ asset('public/storage/shops/' . $shop->logo) }}"   alt=""
                         style="max-width: 100px; max-height: 100px;">
                        </td>
-                        <td>{{$shop->name}}</td>
+                        <td>{{$shop->owner_name}}</td>
+                        <td>{{$shop->shop_name}}</td>
                         <td>{{$shop->email}}</td>
-                        <td>{{$shop->mobile}}</td>
+                        <td>{{$shop->phone}}</td>
                         <td>{{$shop->address}}</td>
                         <td>{{$shop->created_at}}</td>
                         <td>

@@ -13,11 +13,23 @@
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                           id="name"
-                           placeholder="Name" value="{{ old('name', $shop->name) }}">
-                    @error('name')
+                    <label for="owner_name">Owner Name</label>
+                    <input type="text" name="owner_name" class="form-control @error('owner_name') is-invalid @enderror"
+                           id="owner_name"
+                           placeholder="Owner Name" value="{{ old('owner_name', $shop->owner_name) }}">
+                    @error('owner_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="shop_name">Shop Name</label>
+                    <input type="text" name="shop_name" class="form-control @error('shop_name') is-invalid @enderror"
+                           id="shop_name"
+                           placeholder="Shop Name" value="{{ old('shop_name', $shop->shop_name) }}">
+                    @error('shop_name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -36,20 +48,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="mobile">Contact Number</label>
-                    <input type="text" name="mobile" class="form-control @error('mobile') is-invalid @enderror" id="mobile"
-                           placeholder="mobile" value="{{ old('mobile', $shop->mobile) }}">
-                    @error('mobile')
+                    <label for="phone">Contact Number</label>
+                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" id="mobile"
+                           placeholder="phone" value="{{ old('phone', $shop->phone) }}">
+                    @error('phone')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
+
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="text" name="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                           placeholder="password" value="{{ old('password', $shop->password) }}">
-                    @error('password')
+                    <label for="device_id">Device ID</label>
+                    <input type="text" name="device_id" class="form-control @error('device_id') is-invalid @enderror"
+                           id="device_id"
+                           placeholder="device_id" value="{{ old('device_id', $shop->device_id) }}">
+                    @error('device_id')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -69,7 +83,7 @@
                 </div>
                 <div class="form-group">
             <span>Current Logo:</span>
-            <img src="{{ Storage::url('shops/' . $shop->logo) }}" alt="{{ $shop->name }}" style="max-width: 100px; max-height: 100px;">
+            <img src="{{ asset('storage/app/public/shops/' . $shop->logo) }}" alt="{{ $shop->first_name }}" style="max-width: 100px; max-height: 100px;">
             <br>
             <label for="image">New Logo</label>
     <div class="custom-file">

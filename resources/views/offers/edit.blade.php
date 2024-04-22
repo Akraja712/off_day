@@ -37,6 +37,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="base_price">Base Price</label>
+                    <input type="text" name="base_price" class="form-control @error('base_price') is-invalid @enderror"
+                           id="base_price"
+                           placeholder="Base Price" value="{{ old('base_price', $offer->base_price) }}">
+                    @error('base_price')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label for="valid_date">Valid Date</label>
                     <input type="date" name="valid_date" class="form-control @error('valid_date') is-invalid @enderror" id="valid_date"
                            placeholder="valid_date" value="{{ old('valid_date', $offer->valid_date) }}">
@@ -57,12 +69,45 @@
                     </span>
                     @enderror
                 </div>
+
+                <div class="form-group">
+            <span>Current image:</span>
+            <img src="{{ asset('storage/app/public/offers/' . $offer->image) }}" alt="" style="max-width: 100px; max-height: 100px;">
+            <br>
+            <label for="image">New Offer Image</label>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" name="image" id="image">
+        <label class="custom-file-label" for="logo">Choose file</label>
+        @if($offer->image)
+            <input type="hidden" name="existing_image" value="{{ $offer->image }}">
+        @endif
+    </div>
+    @error('offer')
+    <span class="invalid-feedback" role="alert">
+        <strong>{{ $message }}</strong>
+    </span>
+    @enderror
+</div>
+
+<div class="form-group">
+                        <label class="control-label">Availablity</label> <i class="text-danger asterik">*</i>
+                        <br>
+                        <div id="availablity" class="btn-group">
+                            <label class="btn btn-primary" data-toggle-class="btn-default" data-toggle-passive-class="btn-default">
+                                <input type="radio" name="availablity" value="enable" <?= ($offer['availablity'] == 'enable') ? 'checked' : ''; ?>>enable
+                            </label>
+                            <label class="btn btn-success" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                <input type="radio" name="availablity" value="disable" <?= ($offer['availablity'] == 'disable') ? 'checked' : ''; ?>> Disable
+                            </label>
+                       
+                    </div>
+
                 <div class="form-group">
     <label for="shop_id">Shop</label>
     <select name="shop_id" id="shop_id" class="form-control @error('shop_id') is-invalid @enderror">
         <option value="">Select Shop</option>
         @foreach($shops as $shop)
-            <option value="{{ $shop->id }}" {{ $shop->id == $offer->shop_id ? 'selected' : '' }}>{{ $shop->name }}</option>
+            <option value="{{ $shop->id }}" {{ $shop->id == $offer->shop_id ? 'selected' : '' }}>{{ $shop->shop_name }}</option>
         @endforeach
     </select>
     @error('shop_id')

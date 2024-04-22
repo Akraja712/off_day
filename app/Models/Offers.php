@@ -10,9 +10,13 @@ class Offers extends Model
     protected $fillable = [
         'title',
         'description',
+        'base_price',
         'valid_date',
         'max_users',
         'shop_id',
+        'image',
+        'datetime',
+        'availablity',
     ];
 
     public function shop()

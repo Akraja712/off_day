@@ -26,9 +26,12 @@ class OfferStoreRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'base_price' => 'nullable|integer',
             'valid_date' => 'nullable|date',
+            'datetime' => 'nullable|datetime',
             'max_users' => 'nullable|integer',
-            'shop_id' => 'required|exists:shops,id', // Ensure shop_id exists in the shops table
+            'shop_id' => 'required|exists:shops,id',
+            'avatar' => 'nullable|image',
         ];
     }
 }

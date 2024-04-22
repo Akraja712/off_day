@@ -15,7 +15,7 @@ class Shops extends Authenticatable
 
 
     protected $fillable = [
-        'name', 'email', 'mobile', 'address', 'logo','password', // Add 'mobile' to the fillable fields
+        'owner_name', 'shop_name', 'phone', 'address', 'logo','email', // Add 'mobile' to the fillable fields
     ];
 
     protected $hidden = [

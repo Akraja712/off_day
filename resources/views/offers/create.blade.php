@@ -36,6 +36,18 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="base_price">Base Price</label>
+                    <input type="number" name="base_price" class="form-control @error('base_price') is-invalid @enderror"
+                           id="base_price"
+                           placeholder="Base Price" value="{{ old('base_price') }}">
+                    @error('base_price')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label for="date">Valid Date</label>
                     <input type="date" name="valid_date" class="form-control @error('valid_date') is-invalid @enderror" id="valid_date"
                            placeholder="valid_date" value="{{ old('valid_date') }}">
@@ -58,11 +70,37 @@
                 </div>
                 
                 <div class="form-group">
+                        <label class="control-label">Availablity</label> <i class="text-danger asterik">*</i>
+                        <br>
+                        <div id="availablity" class="btn-group">
+                            <label class="btn btn-primary" data-toggle-class="btn-default" data-toggle-passive-class="btn-default">
+                                <input type="radio" name="availablity" value="enable">enable
+                            </label>
+                            <label class="btn btn-success" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                <input type="radio" name="availablity" value="Disabled" > Disabled
+                            </label>
+                       
+                    </div>
+
+                <div class="form-group">
+                <label for="image">Offer Image</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="image" id="image">
+                    <label class="custom-file-label" for="image">Choose File</label>
+                </div>
+                @error('image')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+
+                <div class="form-group">
                     <label for="shop_id">Shop</label>
                     <select name="shop_id" id="shop_id" class="form-control @error('shop_id') is-invalid @enderror">
                         <option value="">Select Shop</option>
                         @foreach($shops as $shop)
-                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                            <option value="{{ $shop->id }}">{{ $shop->shop_name }}</option>
                         @endforeach
                     </select>
                     @error('shop_id')

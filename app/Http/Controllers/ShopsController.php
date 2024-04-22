@@ -46,11 +46,11 @@ class ShopsController extends Controller
         $imagePath = $request->file('logo')->store('shops', 'public');
 
         $shop = Shops::create([
-            'name' => $request->name,
+            'owner_name' => $request->owner_name,
+            'shop_name' => $request->shop_name,
             'email' => $request->email,
             'address' => $request->address,
-            'mobile' => $request->mobile,
-            'password' => $request->password,
+            'phone' => $request->phone,
             'logo' => basename($imagePath),
         ]);
 
@@ -90,11 +90,12 @@ class ShopsController extends Controller
      */
     public function update(Request $request, Shops $shop)
     {
-        $shop->name = $request->name;
+        $shop->shop_name = $request->shop_name;
+        $shop->owner_name= $request->owner_name;
         $shop->email = $request->email;
-        $shop->mobile = $request->mobile;
+        $shop->phone = $request->phone;
         $shop->address = $request->address;
-        $shop->password = $request->password;
+        $shop->device_id = $request->device_id;
 
         if ($request->hasFile('logo')) {
             $newImagePath = $request->file('logo')->store('shops', 'public');

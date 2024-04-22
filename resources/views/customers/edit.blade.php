@@ -46,6 +46,7 @@
                     </span>
                     @enderror
                 </div>
+                
                 <div class="form-group">
             <span>Current Image:</span>
             <img src="{{ asset('storage/app/public/customers/' . $customer->image) }}" alt="{{ $customer->first_name }}" style="max-width: 100px; max-height: 100px;">

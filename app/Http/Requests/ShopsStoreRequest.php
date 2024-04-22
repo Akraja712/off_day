@@ -24,12 +24,13 @@ class ShopsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:20',
+            'owner_name' => 'required|string|max:20',
+            'shop_name' => 'required|string|max:20',
             'email' => 'nullable|email',
-            'mobile' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
             'avatar' => 'nullable|logo',
-            'password' => 'required|string|min:6', // Add password validation rule
+            'device_id' => 'nullable|string',
         ];
     }
     

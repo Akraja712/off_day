@@ -45,13 +45,17 @@ class OffersController extends Controller
      */
     public function store(OfferStoreRequest $request)
     {
+        $imagePath = $request->file('image')->store('offers', 'public');
 
         $offer = Offers::create([
             'title' => $request->title,
             'description' => $request->description,
+            'base_price' => $request->base_price,
             'valid_date' => $request->valid_date,
             'max_users' => $request->max_users,
-            'shop_id' => $request->shop_id, // Assign shop_id from the request
+            'shop_id' => $request->shop_id,
+            'availablity' => $request->availablity,
+            'image' => basename($imagePath),
         ]);
 
         if (!$offer) {
@@ -100,9 +104,18 @@ public function shop()
     {
         $offer->title = $request->title;
         $offer->description = $request->description;
+        $offer->base_price = $request->base_price;
         $offer->valid_date = $request->valid_date;
         $offer->max_users = $request->max_users;
-        $offer->shop_id = $request->shop_id; // Update shop_id
+        $offer->shop_id = $request->shop_id;
+        $offer->availablity = $request->availablity;
+
+        if ($request->hasFile('image')) {
+            $newImagePath = $request->file('image')->store('offers', 'public');
+            // Delete old image if it exists
+            Storage::disk('public')->delete('offers/' . $offer->image);
+            $offer->image = basename($newImagePath);
+        }
 
         if (!$offer->save()) {
             return redirect()->back()->with('error', 'Sorry, Something went wrong while updating the customer.');
@@ -112,7 +125,9 @@ public function shop()
 
     public function destroy(Offers $offer)
     {
-      
+        if (Storage::disk('public')->exists('offers/' . $offer->logo)) {
+            Storage::disk('public')->delete('offers/' . $offer->logo);
+        }
         $offer->delete();
 
         return response()->json([
