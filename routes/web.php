@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OffersController;
 use App\Http\Controllers\ShopsController;
+use App\Http\Controllers\SlidesController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -56,6 +57,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('/shops/{shop}', [ShopsController::class, 'destroy'])->name('shops.destroy');
     Route::put('/shops/{shop}', [ShopsController::class, 'update'])->name('shops.update');
     Route::post('/shops', [ShopsController::class, 'store'])->name('shops.store');
+
+     //Slide
+     Route::get('/slides', [SlidesController::class, 'index'])->name('slides.index');
+     Route::get('/slides/create', [SlidesController::class, 'create'])->name('slides.create');
+     Route::get('/slides/{slide}/edit', [SlidesController::class, 'edit'])->name('slides.edit');
+     Route::delete('/slides/{slide}', [SlidesController::class, 'destroy'])->name('slides.destroy');
+     Route::put('/slides/{slide}', [SlidesController::class, 'update'])->name('slides.update');
+     Route::post('/slides', [SlidesController::class, 'store'])->name('slides.store');
 
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

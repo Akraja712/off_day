@@ -47,6 +47,12 @@
                         <p>Shops</p>
                     </a>
                 </li>
+                <li class="nav-item has-treeview">
+                    <a href="{{ route('slides.index') }}" class="nav-link {{ activeSegment('slides') }}">
+                    <i class="nav-icon fas fa-image"></i>
+                        <p>Slides</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit()">
                         <i class="nav-icon fas fa-power-off"></i>

@@ -15,6 +15,7 @@ Route::post('/edit-offer', [AuthController::class, 'editoffers']);
 Route::post('/delete-offer', [AuthController::class, 'deleteoffers']);
 Route::post('/offer-details', [AuthController::class, 'offerdetails']);
 Route::post('/offer-locked', [AuthController::class, 'offerlocked']);
+Route::post('/slide-list', [AuthController::class, 'slide']);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Customer; 
 use App\Models\Shops;
 use App\Models\Offers;
+use App\Models\Slides;
 use App\Models\Offerlocked;    
 
 class AuthController extends Controller
@@ -640,6 +641,33 @@ public function offerlocked(Request $request)
         'success' => true,
         'message' => 'Offer added successfully.',
     ], 201);
+}
+public function slide(Request $request)
+{
+    // Retrieve all slides
+    $slides = Slides::all();
+
+    if ($slides->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No slides found.',
+        ], 404);
+    }
+
+    $slideData = [];
+    foreach ($slides as $slide) {
+        $imageUrl = asset('storage/app/public/slides/' . $slide->image);
+
+        $slideData[] = [
+            'id' => $slide->id,
+            'image' => $imageUrl,
+        ];
+    }
+    return response()->json([
+        'success' => true,
+        'message' => 'Slides listed successfully.',
+        'data' => $slideData,
+    ], 200);
 }
 
 }
