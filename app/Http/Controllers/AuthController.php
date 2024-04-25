@@ -14,36 +14,40 @@ class AuthController extends Controller
 {
     public function checkregistered(Request $request)
     {
+        // Retrieve phone number from the request
         $phone = $request->input('phone');
-
-        $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
+    
+        // Remove non-numeric characters from the phone number
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+    
+        // Check if the length of the phone number is not equal to 10
         if (strlen($phone) !== 10) {
             $response['success'] = false;
-            $response['message'] = "Phone number should be exactly 10 digits, please remove if +91 is there";
-            print_r(json_encode($response));
-            return false;
+            $response['message'] = "Phone number should be exactly 10 digits";
+            return response()->json($response, 400);
         }
-        
-
+    
+        // Check if the phone number is empty
         if (empty($phone)) {
             $response['success'] = false;
             $response['message'] = 'Phone is empty.';
-            print_r(json_encode($response));
-            return false;
+            return response()->json($response, 400);
         }
-        
+    
+        // Check if a customer with the given phone number exists in the database
         $customer = Customer::where('phone', $phone)->first();
-
+    
+        // If customer not found, return failure response
         if (!$customer) {
             $response['success'] = false;
             $response['message'] = 'Phone not registered.';
-            print_r(json_encode($response));
-            return false;
+            return response()->json($response, 404);
         }
-        
+    
+        // If customer found, return success response with customer details
         return response()->json([
             'success' => true,
-            'message' => 'Phone Number Already Registered.',
+            'message' => 'Logged in successfully.',
             'data' => [
                 'id' => $customer->id,
                 'name' => $customer->name,
@@ -53,7 +57,7 @@ class AuthController extends Controller
             ],
         ], 200);
     }
-
+    
     public function register(Request $request)
     {
         $phone = $request->input('phone');
@@ -61,14 +65,16 @@ class AuthController extends Controller
 
         $errors = [];
 
-        $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
-        if (strlen($phone) !== 10) {
-            $response['success'] = false;
-            $response['message'] = "Phone number should be exactly 10 digits, please remove if +91 is there";
-            print_r(json_encode($response));
-            return false;
-        }
-
+          // Remove non-numeric characters from the phone number
+          $phone = preg_replace('/[^0-9]/', '', $phone);
+    
+          // Check if the length of the phone number is not equal to 10
+          if (strlen($phone) !== 10) {
+              $response['success'] = false;
+              $response['message'] = "Phone number should be exactly 10 digits";
+              return response()->json($response, 400);
+          }
+      
         if (empty($phone)) {
             $response['success'] = false;
             $response['message'] = 'Phone is empty.';
