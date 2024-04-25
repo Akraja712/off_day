@@ -26,8 +26,6 @@ class CustomerStoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:20',
             'phone' => 'nullable|string|max:20',
-            'device_id' => 'nullable|string',
-            'avatar' => 'nullable|image',
         ];
     }
 }

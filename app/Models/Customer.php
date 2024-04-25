@@ -9,9 +9,7 @@ class Customer extends Model
 {
     protected $fillable = [
         'name',
-        'device_id',
         'phone',
-        'image',
     ];
     
 }

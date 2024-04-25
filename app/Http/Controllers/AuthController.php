@@ -6,19 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Customer; 
 use App\Models\Shops;
-use App\Models\Offers;  
+use App\Models\Offers;
+use App\Models\Offerlocked;    
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function checkregistered(Request $request)
     {
         $phone = $request->input('phone');
-        $device_id = $request->input('device_id');
 
-        if (empty($phone) || empty($device_id)) {
+        if (empty($phone)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Phone or device_id is empty.',
+                'message' => 'Phone is empty.',
             ], 400);
         }
 
@@ -27,32 +27,19 @@ class AuthController extends Controller
         if (!$customer) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid phone.',
+                'message' => 'Phone Number not registered.',
             ], 404);
         }
 
-        // Verify the password (you might want to hash and compare it, this is just for demonstration)
-        if ($device_id !== $customer->device_id) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid device_id.',
-            ], 401);
-        }
-
-        // Image URL
-        $imageUrl = asset('storage/app/public/customers/' . $customer->image);
-
         return response()->json([
             'success' => true,
-            'message' => 'Logged in successfully.',
+            'message' => 'Phone Number Already Registered.',
             'data' => [
                 'id' => $customer->id,
                 'name' => $customer->name,
                 'phone' => $customer->phone,
-                'device_id' => $customer->device_id,
                 'updated_at' => $customer->updated_at,
                 'created_at' => $customer->created_at,
-                'image_url' => $imageUrl,
             ],
         ], 200);
     }
@@ -60,23 +47,21 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $phone = $request->input('phone');
-        $device_id = $request->input('device_id');
         $name = $request->input('name');
-        $image = $request->file('image');
 
         $errors = [];
 
         if (empty($phone)) {
-            $errors[] = 'Phone is empty.';
-        }
-        if (empty($device_id)) {
-            $errors[] = 'Device ID is empty.';
+            return response()->json([
+                'success' => false,
+                'message' => 'Phone  is empty.',
+            ], 400);
         }
         if (empty($name)) {
-            $errors[] = 'Name is empty.';
-        }
-        if (empty($image)) {
-            $errors[] = 'Image is empty.';
+            return response()->json([
+                'success' => false,
+                'message' => 'Name  is empty.',
+            ], 400);
         }
 
         if (!empty($errors)) {
@@ -92,23 +77,17 @@ class AuthController extends Controller
         if ($existingCustomer) {
             return response()->json([
                 'success' => false,
-                'message' => 'Customer already exists with this phone number.',
+                'message' => 'Customer already Register with this phone number.',
             ], 409);
         }
 
-        // Store the image and get its path
-        $imagePath = $image->store('customers', 'public');
 
         // Create a new customer record
         $customer = new Customer();
         $customer->phone = $phone;
-        $customer->device_id = $device_id;
         $customer->name = $name;
-        $customer->image = basename($imagePath);
         $customer->save();
 
-        // Image URL
-        $imageUrl = asset('storage/app/public/customers/' . $customer->image);
 
         return response()->json([
             'success' => true,
@@ -117,10 +96,8 @@ class AuthController extends Controller
                 'id' => $customer->id,
                 'name' => $customer->name,
                 'phone' => $customer->phone,
-                'device_id' => $customer->device_id,
                 'updated_at' => $customer->updated_at,
                 'created_at' => $customer->created_at,
-                'image_url' => $imageUrl,
             ],
         ], 201);
     }
@@ -144,10 +121,6 @@ class AuthController extends Controller
             'message' => 'Customer not found.',
         ], 404);
     }
-
-    // Image URL
-    $imageUrl = asset('storage/app/public/customers/' . $customer->image);
-
     return response()->json([
         'success' => true,
         'message' => 'Customer details retrieved successfully.',
@@ -155,10 +128,8 @@ class AuthController extends Controller
             'id' => $customer->id,
             'name' => $customer->name,
             'phone' => $customer->phone,
-            'device_id' => $customer->device_id,
             'updated_at' => $customer->updated_at,
             'created_at' => $customer->created_at,
-            'image_url' => $imageUrl,
         ],
     ], 200);
 }
@@ -590,6 +561,71 @@ return response()->json([
         'image_url' => $imageUrl,
     ],
 ], 200);
+}
+
+public function offerlocked(Request $request)
+{
+    $customer_id = $request->input('customer_id');
+    $offer_id = $request->input('offer_id');
+
+    $errors = [];
+
+    if (empty($customer_id)) {
+        $errors[] = 'customer_id is empty.';
+    }
+    if (empty($offer_id)) {
+        $errors[] = 'offer_id is empty.';
+    }
+    
+    if (!empty($errors)) {
+        return response()->json([
+            'success' => false,
+            'message' => $errors,
+        ], 400);
+    }
+
+    $customer = Customer::find($customer_id);
+    if (!$customer) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid customer_id.',
+        ], 400);
+    }
+
+    $offer = Offers::find($offer_id);
+    if (!$offer) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid offer_id.',
+        ], 400);
+    }
+
+    // Check if the combination of customer_id and offer_id already exists
+    $existingEntry = Offerlocked::where('customer_id', $customer_id)
+                                 ->where('offer_id', $offer_id)
+                                 ->first();
+
+    if ($existingEntry) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Customer already received this offer.',
+        ], 400);
+    }
+
+    // If the entry doesn't exist, proceed to add it
+    $offerlocked = new Offerlocked();
+    $offerlocked->customer_id = $customer_id;
+    $offerlocked->offer_id = $offer_id;
+    $offerlocked->datetime = now(); // Add current datetime
+    $offerlocked->save();
+
+    $offer->offer_users += 1;
+    $offer->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Offer added successfully.',
+    ], 201);
 }
 
 }

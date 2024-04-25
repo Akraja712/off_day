@@ -16,9 +16,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Image</th>
                         <th>Name</th>
-                        <th>Device ID</th>
                         <th>Contact</th>
                         <th>Created At</th>
                         <th>Actions</th>
@@ -28,9 +26,7 @@
                     @foreach ($customers as $customer)
                     <tr>
                         <td>{{$customer->id}}</td>
-                        <td><img class="customer-img img-thumbnail img-fluid" src="{{ asset('storage/app/public/customers/' . $customer->image) }}" alt="" style="max-width: 100px; max-height: 100px;"></td>
                         <td>{{$customer->name}}</td>
-                        <td>{{$customer->device_id}}</td>
                         <td>{{$customer->phone}}</td>
                         <td>{{$customer->created_at}}</td>
                         <td>

@@ -44,13 +44,10 @@ class CustomerController extends Controller
     
     public function store(CustomerStoreRequest $request)
     {
-        $imagePath = $request->file('image')->store('customers', 'public');
 
         $customer = Customer::create([
             'name' => $request->name,
-            'device_id' => $request->device_id,
             'phone' => $request->phone,
-            'image' => basename($imagePath),
         ]);
 
         if (!$customer) {
@@ -90,15 +87,8 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $customer->name = $request->name;
-        $customer->device_id = $request->device_id;
         $customer->phone = $request->phone;
 
-        if ($request->hasFile('image')) {
-            $newImagePath = $request->file('image')->store('customers', 'public');
-            // Delete old image if it exists
-            Storage::disk('public')->delete('customers/' . $customer->image);
-            $customer->image = basename($newImagePath);
-        }
 
         if (!$customer->save()) {
             return redirect()->back()->with('error', 'Sorry, Something went wrong while updating the customer.');
