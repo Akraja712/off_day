@@ -15,22 +15,31 @@ class AuthController extends Controller
     {
         $phone = $request->input('phone');
 
+        $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
+        if (strlen($phone) !== 10) {
+            $response['success'] = false;
+            $response['message'] = "Phone number should be exactly 10 digits, please remove if +91 is there";
+            print_r(json_encode($response));
+            return false;
+        }
+        
+
         if (empty($phone)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Phone is empty.',
-            ], 400);
+            $response['success'] = false;
+            $response['message'] = 'Phone is empty.';
+            print_r(json_encode($response));
+            return false;
         }
-
-        // Check if a customer with the given mobile number exists in the database
+        
         $customer = Customer::where('phone', $phone)->first();
-        if (!$customer) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Phone Number not registered.',
-            ], 404);
-        }
 
+        if (!$customer) {
+            $response['success'] = false;
+            $response['message'] = 'Phone not registered.';
+            print_r(json_encode($response));
+            return false;
+        }
+        
         return response()->json([
             'success' => true,
             'message' => 'Phone Number Already Registered.',
@@ -51,11 +60,19 @@ class AuthController extends Controller
 
         $errors = [];
 
+        $phone = preg_replace('/[^0-9]/', '', $_POST['phone']);
+        if (strlen($phone) !== 10) {
+            $response['success'] = false;
+            $response['message'] = "Phone number should be exactly 10 digits, please remove if +91 is there";
+            print_r(json_encode($response));
+            return false;
+        }
+
         if (empty($phone)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Phone  is empty.',
-            ], 400);
+            $response['success'] = false;
+            $response['message'] = 'Phone is empty.';
+            print_r(json_encode($response));
+            return false;
         }
         if (empty($name)) {
             return response()->json([
@@ -71,7 +88,6 @@ class AuthController extends Controller
             ], 400);
         }
 
-        // Check if the user with the given phone number already exists
         $existingCustomer = Customer::where('phone', $phone)->first();
 
         if ($existingCustomer) {
@@ -81,8 +97,6 @@ class AuthController extends Controller
             ], 409);
         }
 
-
-        // Create a new customer record
         $customer = new Customer();
         $customer->phone = $phone;
         $customer->name = $name;
