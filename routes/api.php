@@ -10,6 +10,7 @@ Route::post('/customer-details', [AuthController::class, 'customerdetails']);
 Route::post('shop-login', [AuthController::class, 'shoplogin']);
 Route::post('shop-register', [AuthController::class, 'shopregister']);
 Route::post('/shop-details', [AuthController::class, 'shopdetails']);
+Route::post('/all-shop-details', [AuthController::class, 'allshopdetails']);
 Route::post('/add-offer', [AuthController::class, 'addoffers']);
 Route::post('/edit-offer', [AuthController::class, 'editoffers']);
 Route::post('/delete-offer', [AuthController::class, 'deleteoffers']);

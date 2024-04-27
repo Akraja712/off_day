@@ -330,6 +330,45 @@ return response()->json([
     ],
 ], 200);
 }
+public function allshopdetails(Request $request)
+{
+    // Fetch all shop details from the database
+    $shops = Shops::all();
+
+    if ($shops->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No shops found.',
+        ], 404);
+    }
+
+    $shopDetails = [];
+
+    // Iterate through each shop record and format the data
+    foreach ($shops as $shop) {
+        // Image URL
+        $imageUrl = asset('storage/app/public/shops/' . $shop->logo);
+
+        $shopDetails[] = [
+            'id' => $shop->id,
+            'owner_name' => $shop->owner_name,
+            'shop_name' => $shop->shop_name,
+            'phone' => $shop->phone,
+            'email' => $shop->email,
+            'address' => $shop->address,
+            'device_id' => $shop->device_id,
+            'updated_at' => $shop->updated_at,
+            'created_at' => $shop->created_at,
+            'image_url' => $imageUrl,
+        ];
+    }
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Shop details retrieved successfully.',
+        'data' => $shopDetails,
+    ], 200);
+}
 
 public function addOffers(Request $request)
 {

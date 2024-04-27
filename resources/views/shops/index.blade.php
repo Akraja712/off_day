@@ -11,6 +11,18 @@
 @section('content')
 <div class="card">
     <div class="card-body">
+    <div class="row mb-4">
+        <div class="ml-auto">
+                <form action="{{ route('shops.index') }}" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name or phone">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">

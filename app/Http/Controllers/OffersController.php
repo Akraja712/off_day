@@ -15,14 +15,24 @@ class OffersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (request()->wantsJson()) {
-            return response(
-                Offers::all()
-            );
+        $query = Offers::query()->with('shop'); // Eager load the shop relationship
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('title', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhereHas('shop', function ($query) use ($search) {
+                      $query->where('name', 'like', "%$search%");
+                  });
         }
-        $offers = Offers::latest()->paginate(10);
+    
+        if ($request->wantsJson()) {
+            return response($query->get());
+        }
+    
+        $offers = $query->latest()->paginate(10);
         return view('offers.index')->with('offers', $offers);
     }
 

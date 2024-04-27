@@ -14,16 +14,24 @@ class ShopsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (request()->wantsJson()) {
-            return response(
-                Shops::all()
-            );
+        $query = Shops::query();
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('owner_name', 'like', "%$search%")
+                  ->orWhere('shop_name', 'like', "%$search%");
         }
-        $shops = Shops::latest()->paginate(10);
+    
+        if ($request->wantsJson()) {
+            return response($query->get());
+        }
+    
+        $shops = $query->latest()->paginate(10);
         return view('shops.index')->with('shops', $shops);
     }
+
 
     /**
      * Show the form for creating a new resource.
