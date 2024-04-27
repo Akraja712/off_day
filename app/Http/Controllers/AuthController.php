@@ -577,51 +577,49 @@ public function deleteoffers(Request $request)
 }
 public function offerdetails(Request $request)
 {
-$offer_id = $request->input('offer_id');
+    // Fetch all offer details from the database
+    $offers = Offers::all();
 
-if (empty($offer_id)) {
+    if ($offers->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No offers found.',
+        ], 404);
+    }
+
+    $offerDetails = [];
+
+    // Iterate through each offer record and format the data
+    foreach ($offers as $offer) {
+        // Retrieve the associated shop details
+        $shop = Shops::find($offer->shop_id);
+
+        // Image URL
+        $imageUrl = asset('storage/app/public/offers/' . $offer->image);
+
+        $offerDetails[] = [
+            'id' => $offer->id,
+            'title' => $offer->title,
+            'description' => $offer->description,
+            'base_price' => $offer->base_price,
+            'valid_date' => $offer->valid_date,
+            'datetime' => $offer->datetime,
+            'max_users' => $offer->max_users,
+            'availablity' => $offer->availablity,
+            'shop_name' => $shop ? $shop->shop_name : 'Unknown', // Provide a default value if shop is not found
+            'updated_at' => $offer->updated_at,
+            'created_at' => $offer->created_at,
+            'image_url' => $imageUrl,
+        ];
+    }
+
     return response()->json([
-        'success' => false,
-        'message' => 'offer_id is empty.',
-    ], 400);
+        'success' => true,
+        'message' => 'Offer details retrieved successfully.',
+        'data' => $offerDetails,
+    ], 200);
 }
 
-// Fetch the customer details from the database based on the provided customer_id
-$offer = Offers::find($offer_id);
-
-if (!$offer) {
-    return response()->json([
-        'success' => false,
-        'message' => 'Offer not found.',
-    ], 404);
-}
-
-
-    // Retrieve the associated shop details
-    $shop = Shops::find($offer->shop_id);
-
-// Image URL
-$imageUrl = asset('storage/app/public/offers/' . $offer->image);
-
-return response()->json([
-    'success' => true,
-    'message' => 'Offers details retrieved successfully.',
-    'data' => [
-        'id' => $offer->id,
-        'title' => $offer->title,
-        'description' => $offer->description,
-        'base_price' => $offer->base_price,
-        'valid_date' => $offer->valid_date,
-        'datetime' => $offer->datetime,
-        'max_users' => $offer->max_users,
-        'availablity' => $offer->availablity,
-        'shop_name' => $shop->shop_name,
-        'updated_at' => $offer->updated_at,
-        'created_at' => $offer->created_at,
-        'image_url' => $imageUrl,
-    ],
-], 200);
-}
 
 public function offerlocked(Request $request)
 {
